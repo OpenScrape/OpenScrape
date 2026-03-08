@@ -52,6 +52,56 @@ To integrate the MCP server with Windsurf or other MCP-compatible IDEs, add the 
 
 Replace `/path/to/openscrape-cli/` with the actual installation path of the package on your system.
 
+### Auto-Starting the MCP Server
+
+#### Windows
+Create a batch file to start the MCP server automatically:
+
+**start_mcp.bat**
+```batch
+@echo off
+cd /d "%~dp0"
+start /B node mcp-server.js
+echo MCP server started in background.
+pause
+```
+
+To run on startup, copy the batch file to your Windows startup folder:
+```batch
+copy "start_mcp.bat" "%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\"
+```
+
+Replace `start_mcp.bat` with the full path to your batch file if needed.
+
+#### macOS
+Create a launch agent to auto-start the MCP server:
+
+**~/Library/LaunchAgents/com.openscrape.mcp.plist**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.openscrape.mcp</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/node</string>
+        <string>/path/to/openscrape-cli/mcp-server.js</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
+```
+
+Load the launch agent:
+```bash
+launchctl load ~/Library/LaunchAgents/com.openscrape.mcp.plist
+```
+
+Replace `/path/to/openscrape-cli/` with your installation path.
+
 ## Features
 
 - **Interactive CLI**: User-friendly terminal interface with colorful prompts
